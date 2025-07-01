@@ -27,13 +27,12 @@ def get_products_in_collection(collection_id):
 
     while True:
         params = {
-            "collection_id": collection_id,
             "limit": limit
         }
         if page_info:
             params["page_info"] = page_info
 
-        url = f"{BASE_URL}/products.json"
+        url = f"{BASE_URL}/collections/{collection_id}/products.json"
         response = requests.get(url, headers=HEADERS, params=params)
         data = response.json()
 
@@ -42,6 +41,7 @@ def get_products_in_collection(collection_id):
 
         products.extend(data["products"])
 
+        # Pagination using Link header
         link_header = response.headers.get("Link")
         if link_header and 'rel="next"' in link_header:
             import re
